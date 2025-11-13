@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teapot Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/drone_icon_155461.ico') }} type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"> <img src="{{ url_for('static', filename='img/teapot2.png') }}" width="70px"> </div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="heroback"></div>
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>A new step in A.I. drone detection</h1>
+                    <p></p>
+                    <a href="#features" class="cta-button">Get Started</a>
+                </div>
+        </div>
+    </section>
+
+    <script>
+    window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+
+        // Parallax background
+        const bg = document.querySelector(".heroback");
+        if (bg) {
+            bg.style.transform = `translateY(${scrollTop * 0.15}px)`;
+        }
+
+        // Hero text animation
+        const h1 = document.querySelector(".hero-text h1");
+        const p = document.querySelector(".hero-text p");
+        const hero = document.querySelector(".hero");
+
+        if (h1 && hero) {
+            const heroTop = hero.offsetTop;
+            const heroHeight = hero.offsetHeight;
+
+            // progress: 0 at top of hero → 1 after 60% of hero scrolled
+            const progress = Math.min((scrollTop - heroTop) / (heroHeight * 0.6), 1);
+
+            // Scale grows 1 → 1.5
+            const scale = 1 + progress * 0.5;
+
+            // Opacity fades out
+            const opacity = 1 - progress * 1.2;
+
+            h1.style.transform = `scale(${scale}) translateY(-${progress * 50}px)`;
+            h1.style.opacity = opacity < 0 ? 0 : opacity;
+
+            if (p) p.style.opacity = opacity < 0 ? 0 : opacity;
+        }
+    });
+    </script>
+
+
+    <section class="features" id="features">
+        <h2>Our Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Cutting edge Deep-Learning alogirthm</h3>
+                <p>Reliable detection with an extensive training sample of real-world scenarios.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Secure & Reliable</h3>
+                <p>Military-grade security measures to keep the information safe and protected at all times.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Intuitive Dashboard</h3>
+                <p>A dashboard that provides the information you need when you need it</p>
+            </div>
+            <div class="feature-card">
+                <h3>Intuitive Dashboard</h3>
+                <p>A dashboard that provides the information you need when you need it</p>
+            </div>
+            <div class="feature-card">
+                <h3>Intuitive Dashboard</h3>
+                <p>A dashboard that provides the information you need when you need it</p>
+            </div>
+            <div class="feature-card">
+                <h3>Intuitive Dashboard</h3>
+                <p>A dashboard that provides the information you need when you need it</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <h2>About Us</h2>
+        <p>We are dedicated to delivering exceptional solutions that push the boundaries of what's possible. Our team of experts works tirelessly to ensure you have the best experience.</p>
+        <!-- <p>With years of experience in the industry, we understand what it takes to create products that not only meet but exceed expectations.</p> -->
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Teapot. All rights reserved.</p>
+    </footer>
+</body>
+</html>
