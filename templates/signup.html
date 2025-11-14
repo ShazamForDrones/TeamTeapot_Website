@@ -7,14 +7,38 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='img/drone_icon_155461.ico') }}" type="image/x-icon">
 </head>
-{% if error == True %}
-        <p>User or password not valid</p>
-{% endif %}
+<body class="login">
+    <header>
+        <nav>
+            <div class="logo"> <img src="{{ url_for('static', filename='img/teapot4.png') }}" width="70px"> </div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                {% if session["user"] %}
+                    <li><a href="{{ url_for('logout')}}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login')}}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
 
-<form method="POST">
-    <h2>Créer un compte</h2>
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Mot de passe" required><br>
-    <button type="submit">S'inscrire</button>
-</form>
-<a href="/login">Déjà un compte ? Se connecter</a>
+    <div class="loginContainer">
+        {% if error == True %}
+        <p>User or password not valid</p>
+        {% endif %}
+
+        <form class="loginContainer" method="POST">
+            <h2>Create an account</h2>
+            <input class="cta-input" type="email" name="email" placeholder="Email" required><br>
+            <input class="cta-input" type="password" name="password" placeholder="Mot de passe" required><br>
+            <button class="cta-button loginBtn" type="submit">Sign up</button>
+        </form>
+        <div id="registerFooter">
+            <p>Already have an account?</p>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+</body>
+</html>
