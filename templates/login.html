@@ -10,9 +10,9 @@
         <nav>
             <div class="logo"> <img src="{{ url_for('static', filename='img/teapot4.png') }}" width="70px"> </div>
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
+                <li><a href="{{ url_for('index')}}">Home</a></li>
+                <li><a href="{{ url_for('index')}}">Features</a></li>
+                <li><a href="{{ url_for('index')}}">About</a></li>
                 {% if session["user"] %}
                     <li><a href="{{ url_for('logout')}}">Logout</a></li>
                 {% else %}
