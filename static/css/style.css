@@ -361,3 +361,26 @@
             justify-content: center;
             align-items: center;
         }
+
+        .loginContainerindex{
+            width: 100%;
+            height: 40rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .backgroundcontainerregister{
+            width: 30%;
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+
+        #reg{
+            background: #000000;
+        }
+
+
