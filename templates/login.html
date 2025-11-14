@@ -8,7 +8,7 @@
 <body class="login">
     <header>
         <nav>
-            <div class="logo"> <img src="{{ url_for('static', filename='img/teapot4.png') }}" width="70px"> </div>
+            <div class="logo"><a href="{{ url_for('index')}}" style="text-decoration: none"> <img src="{{ url_for('static', filename='img/teapot4.png') }}" width="70px"></a> </div>
             <ul>
                 <li><a href="{{ url_for('index')}}">Home</a></li>
                 <li><a href="{{ url_for('index')}}">Features</a></li>
@@ -21,9 +21,8 @@
             </ul>
         </nav>
     </header>
-
-        {% if error == True %}
     <div class="loginContainer">
+        {% if error == True %}
         <p>User or password not valid</p>
         {% endif %}
         <form class="loginContainer" method="POST">

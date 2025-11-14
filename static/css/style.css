@@ -380,7 +380,13 @@
         }
 
         #reg{
-            background: #000000;
+            background: #0a0a0a;;
         }
 
+        #footerrega{
+             color: #6fa8dc;
+        }
+        #footerrega:hover {
+            color: #0b5394;
+        }
 

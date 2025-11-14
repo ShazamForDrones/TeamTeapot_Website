@@ -10,7 +10,7 @@
 <body>
     <header>
         <nav>
-            <div class="logo"> <img src="{{ url_for('static', filename='img/teapot4.png') }}" width="70px"> </div>
+            <div class="logo"> <a href="#home" style="text-decoration: none"> <img src="{{ url_for('static', filename='img/teapot4.png') }}" width="70px"> </a></div>
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
@@ -30,7 +30,11 @@
                 <div class="hero-text">
                     <h1>A new step in A.I. drone detection</h1>
                     <p></p>
-                    <a href="#reg" class="cta-button">Get Started</a>
+                    {% if session["user"] %}
+                        <a href="#reg" class="cta-button">Open Dashboard</a>
+                    {% else %}
+                        <a href="#reg" class="cta-button">Get Started</a>
+                    {% endif %}
                 </div>
         </div>
     </section>
@@ -136,18 +140,17 @@
     <section class="Registersec" id="reg" style="padding: 9rem 2rem;">
         <div class="loginContainerindex">
             <div class="backgroundcontainerregister">
-        <form class="loginContainerindex" method="POST">
-            <h2 style="color: #0b5394;padding-bottom: 3%">Create an account</h2>
+            <form class="loginContainerindex" method="POST">
+            <h2 id="regreal" style="color: #0b5394;padding-bottom: 3%;font-size:40px;" >Create an account</h2>
             <input class="cta-input" type="email" name="email" placeholder="Email" required style="margin: 5px;" ><br>
             <input class="cta-input" type="password" name="password" placeholder="Mot de passe" required style="margin: -10px;"><br>
             <button class="cta-button loginBtn" type="submit">Sign up</button>
         </form>
-        <div id="registerFooter" style="padding-top: 10px;">
-            <p>Already have an account?</p>
-            <a href="/login" style="text-decoration: none">Login</a>
+        <div  style="padding-top: 10px;padding-bottom: 10px;">
+            <a href="/login" id ="footerrega" style="text-decoration: none;">Already have an account?</a>
         </div>
-          </div>
-    </div>
+        </div>
+        </div>
     </section>
 
     <section class="about" id="about">

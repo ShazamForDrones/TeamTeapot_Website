@@ -25,6 +25,7 @@ def login():
                 {"email": mail, "password": password}
             )
             session["user"] = retour.user.email
+            session["access_token"] = retour.session.access_token  # IMPORTANT
             return redirect(url_for("index"))
         except Exception as e:
             print("error:", e)
@@ -43,15 +44,28 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-        result = supabase.auth.sign_up({"email": email, "password": password})
-        if result.user:
-            return redirect(url_for("login"))
-        else:
-            return redirect(url_for("register", error="Erreur see logs"))
-    return render_template("signup.html", error=None)
+    try:
+        if request.method == "POST":
+            email = request.form["email"]
+            password = request.form["password"]
+            result = supabase.auth.sign_up({"email": email, "password": password})
+            if result.user:
+                try:
+                    retour = supabase.auth.sign_in_with_password(
+                        {"email": email, "password": password}
+                    )
+                    session["user"] = retour.user.email
+                    session["access_token"] = retour.session.access_token  # IMPORTANT
+                    return redirect(url_for("index"))
+                except Exception as e:
+                    print("error:", e)
+                    return redirect(url_for("login"))
+            else:
+                return redirect(url_for("register", error="Erreur see logs"))
+        return render_template("signup.html", error=None)
+    except Exception as e:
+        print(e)
+        return redirect(url_for("index"))
 
 @app.route('/dev/eric')
 def eric():
@@ -70,4 +84,4 @@ def jeremie():
     return "jeremie"
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000,debug=True)
+    app.run(host="0.0.0.0", port=5000,debug=True,ssl_context='adhoc')
