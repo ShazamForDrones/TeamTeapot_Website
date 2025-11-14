@@ -1,4 +1,4 @@
-* {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -15,7 +15,7 @@
         }
 
         header {
-            background: linear-gradient(135deg, 	#031424 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #031424 0%, #1a1a1a 100%);
             padding: 1rem 0;
             position: fixed;
             width: 100%;
@@ -62,26 +62,24 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            /* background: linear-gradient(135deg, #000000 0%, #031424 100%);*/
-            /* full viewport height */
             transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
+
         .heroback {
-            position: absolute;              /* make it a background layer */
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-image: url("../img/WorldMap.svg");
-            background-size: contain;        /* use cover if you want it to fill fully */
+            background-size: contain;
             background-position: center 6vh;
             background-repeat: no-repeat;
-            filter: blur(10px);
+            filter: blur(7px);
             z-index: 0;
             transform: translateY(0);
             transition: transform 0.2s ease-out;
         }
-
 
         .hero::before {
             content: '';
@@ -99,12 +97,12 @@
             position: relative;
             z-index: 2;
             padding: 0 2rem;
-            height: 100%; /* needed for sticky positioning */
+            height: 100%;
         }
 
         .hero-text {
             position: sticky;
-            top: 35%; /* sticks near middle of viewport */
+            top: 35%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -129,7 +127,7 @@
             display: inline-block;
             padding: 1rem 2.5rem;
             background: #0b5394;
-            color: 	#6fa8dc;
+            color: #6fa8dc;
             text-decoration: none;
             font-weight: bold;
             border-radius: 5px;
@@ -175,7 +173,6 @@
 
         .feature-card:hover {
             border-color: #0b5394;
-            /* box-shadow: 0 0 20px rgba(0,255,0,0.2);*/
             transform: translateY(-5px);
         }
 
@@ -189,8 +186,83 @@
             color: #b3b3b3;
         }
 
+        .Teams {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .Team-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("../img/PolygonLuminary.svg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(7px);
+            opacity: 0.7;
+            z-index: 0;
+        }
+
+        .Teams h2 {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #0b5394;
+        }
+
+        .Team-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .Team-grid a {
+            text-decoration: none;
+        }
+
+        .Team-card {
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(5px);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #333;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .Team-card:hover {
+            border-color: #0b5394;
+            box-shadow: 0 0 20px rgba(11, 83, 148, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .Team-card h3 {
+            text-decoration: none;
+            color: #0b5394;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .Team-card img {
+            border-radius: 50%;
+        }
+
+        .Team-card p {
+            text-decoration: none;
+            color: #b3b3b3;
+        }
+
         .about {
-            background: 	#031424;
+            background: #031424;
         }
 
         .about h2 {
@@ -210,7 +282,6 @@
             text-align: center;
             padding: 1.2rem;
             border-top: 2px solid #0b5394;
-
         }
 
         footer p {
@@ -218,7 +289,7 @@
         }
 
         @media (max-width: 768px) {
-            .hero h1 {
+            .hero-text h1 {
                 font-size: 2.5rem;
             }
 
@@ -229,56 +300,8 @@
             .feature-grid {
                 grid-template-columns: 1fr;
             }
-        }
-        /* -----------------------------
-           Hero Animation
-        ------------------------------
-        .hero-text {
-            opacity: 0;
-            transform: translateY(50px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            animation: heroContainerEnter 1s forwards;
-            animation-delay: 0.2s;
-        }
 
-        @keyframes heroContainerEnter {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
+            .Team-grid {
+                grid-template-columns: 1fr;
             }
         }
-        .hero-text h1,
-        .hero-text p,
-        .hero-text .cta-button {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.8s forwards;
-        }
-        .hero-text h1 {
-            animation-delay: 0.3s;
-        }
-        .hero-text p {
-            animation-delay: 0.5s;
-        }
-        .hero-text .cta-button {
-            animation-delay: 0.7s;
-        }
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-*/

@@ -14,6 +14,60 @@ supabase: Client = create_client(url, key)
 @app.route('/')
 def index():
     return render_template("index.html")
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        data = request.form
+        mail = data.get("mail")
+        password = data.get("pass")
+        try:
+            retour = supabase.auth.sign_in_with_password(
+                {"email": mail, "password": password}
+            )
+            session["user"] = retour.user.email
+            return redirect(url_for("index"))
+        except Exception as e:
+            print("error:", e)
+            return render_template("login.html", error=True)
+    if "user" in session:
+        print("déjà conn")
+        print(session["user"])
+        return redirect(url_for("index"))
+    else:
+        return render_template("login.html", error=False)
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("index"))
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+        result = supabase.auth.sign_up({"email": email, "password": password})
+        if result.user:
+            return redirect(url_for("login"))
+        else:
+            return redirect(url_for("register", error="Erreur see logs"))
+    return render_template("signup.html", error=None)
+
+@app.route('/dev/eric')
+def eric():
+    return "eric"
+
+@app.route('/dev/julien')
+def julien():
+    return "julien"
+
+@app.route('/dev/felix')
+def felix():
+    return "felix"
+
+@app.route('/dev/jeremie')
+def jeremie():
+    return "jeremie"
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000,debug=True)

@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teapot Welcome</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='img/drone_icon_155461.ico') }} type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='img/drone_icon_155461.ico') }}" type="image/x-icon">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo"> <img src="{{ url_for('static', filename='img/teapot2.png') }}" width="70px"> </div>
+            <div class="logo"> <img src="{{ url_for('static', filename='img/teapot4.png') }}" width="70px"> </div>
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="#contact">Login</a></li>
+                {% if session["user"] %}
+                    <li><a href="{{ url_for('logout')}}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login')}}">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -72,7 +76,7 @@
         <h2>Our Features</h2>
         <div class="feature-grid">
             <div class="feature-card">
-                <h3>Cutting edge Deep-Learning alogirthm</h3>
+                <h3>Cutting edge Deep-Learning algorithm</h3>
                 <p>Reliable detection with an extensive training sample of real-world scenarios.</p>
             </div>
             <div class="feature-card">
@@ -98,10 +102,41 @@
         </div>
     </section>
 
+    <section class="Teams" id="Teams">
+        <div class="Team-background"></div>
+        <h2>Our Team</h2>
+        <div class="Team-grid">
+            <a href="{{ url_for('julien') }}" style="text-decoration: none;">
+            <div class="Team-card">
+                <h3>Julien Turcotte</h3>
+                <img src="{{ url_for('static', filename='img/julien.jpg') }}" width="70px">
+            </div>
+            </a>
+            <a href="{{ url_for('felix') }}" style="text-decoration: none;">
+            <div class="Team-card">
+                <h3>Félix Lachapelle</h3>
+                <img src="{{ url_for('static', filename='img/felix.jpg') }}" width="70px">
+            </div>
+            </a>
+            <a href="{{ url_for('eric') }}" style="text-decoration: none;">
+            <div class="Team-card">
+                <h3>Eric Fischer</h3>
+                <img src="{{ url_for('static', filename='img/eric.jpg') }}" width="70px">
+            </div>
+            </a>
+            <a href="{{ url_for('jeremie') }}" style="text-decoration: none;">
+            <div class="Team-card">
+                <h3>Jérémie Le Bel</h3>
+                <img src="{{ url_for('static', filename='img/jeremie.jpg') }}" width="70px">
+            </div>
+            </a>
+        </div>
+    </section>
+
     <section class="about" id="about">
         <h2>About Us</h2>
-        <p style="color: #3d85c6">We are student who work tirelessly to insure a <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">reliable</span> and <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">clean</span> product.</p>
-        <p style="color: #3d85c6">We have a commitment to deliver something not only useful but <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">intuitive</span> and <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">scalable</span>.</p>
+        <p style="color: #3d85c6">We are students who work tirelessly to insure a <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">Reliable</span> and <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">Clean</span> product.</p>
+        <p style="color: #3d85c6">We have a commitment to deliver something not only useful but <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">Intuitive</span> and <span style="color: #6fa8dc;font-weight: bold;text-decoration: underline;">Scalable</span>.</p>
     </section>
 
     <footer>
