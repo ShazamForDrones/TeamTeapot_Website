@@ -95,7 +95,11 @@ body, html {
 }
 
 /* Content area */
-.content {
+#content {
     padding: 20px;
     flex: 1;
+}
+
+.tab-content-hidden {
+    display: none;
 }

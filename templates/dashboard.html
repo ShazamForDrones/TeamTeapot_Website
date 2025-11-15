@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleDash.css') }}">
-    <link rel="script" href="{{ url_for('static', filename='js/sidebar.js') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <div class="dashboard">
-        <aside class="sidebar" id="sidebar">
-            <img src="{{ url_for('static', filename='img/teapot6.png') }}" width="45px" style="margin : 10px">
-            <ul>
-                <li><a href="#"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-                <li><a href="#"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-crosshairs"></i><span>Threats</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-microchip"></i><span>Devices</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-server"></i><span>Servers</span></a></li>
-                <li><a href="#"><i class="fa-solid fa-map-location"></i><span>Live Map</span></a></li>
-            </ul>
-        </aside>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/StyleDash.css') }}">
+        <link rel="script" href="{{ url_for('static', filename='js/sidebar.js') }}" defer>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        <div class="dashboard">
+            <aside class="sidebar" id="sidebar">
+                <img src="{{ url_for('static', filename='img/teapot6.png') }}" width="45px" style="margin : 10px">
+                <ul id="sidebarUl">
+                    <li id="sidebarDashboard"><a href="#"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                    <li id="sidebarAnalytics"><a href="#"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+                    <li id="sidebarThreats"><a href="#"><i class="fa-solid fa-crosshairs"></i><span>Threats</span></a></li>
+                    <li id="sidebarDevices"><a href="#"><i class="fa-solid fa-microchip"></i><span>Devices</span></a></li>
+                    <li id="sidebarServers"><a href="#"><i class="fa-solid fa-server"></i><span>Servers</span></a></li>
+                    <li id="sidebarLiveMap"><a href="#"><i class="fa-solid fa-map-location"></i><span>Live Map</span></a></li>
+                </ul>
+            </aside>
 
-        <div class="main">
-            <header class="top-header">
-                <h1>{{ session["username"] }}'s Dashboard</h1>
-            </header>
+            <div class="main">
+                <header class="top-header">
+                    <h1>{{ session["username"] }}'s Dashboard</h1>
+                </header>
 
-            <div class="content">
-                <p>Welcome to your dashboard!</p>
+                <div id="content">
+                    <div id="tab-dashboard" class="">Dashboard tab</div>
+                    <div id="tab-analytics" class="tab-content-hidden">Analytics tab</div>
+                    <div id="tab-threats" class="tab-content-hidden">Threats tab</div>
+                    <div id="tab-devices" class="tab-content-hidden">Devices tab</div>
+                    <div id="tab-servers" class="tab-content-hidden">Servers tab</div>
+                    <div id="tab-live-map" class="tab-content-hidden">Live map tab</div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
-</body>
+        <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    </body>
 </html>
