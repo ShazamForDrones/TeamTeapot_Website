@@ -34,6 +34,7 @@ def index():
             if result.user:
                 print("Passed -> signup")
                 session["user"] = result.user.email
+                session["Userid"] = userid
                 getusr(userid)
 
                 session["access_token"] = result.session.access_token
@@ -134,5 +135,10 @@ def dashboard():
     else:
         return redirect(url_for("index"))
 
+@app.route("/map")
+def mapps():
+    return render_template("map.html")
+
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=80,debug=True)
+    app.run( port=80,debug=True)

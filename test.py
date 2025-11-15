@@ -1,5 +1,3 @@
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-print("SUPABASE_URL:", repr(os.getenv("SUPABASE_URL")))
+import folium
+m = folium.Map(location=(45.41837, 75.70577))
+m.save("index.html")
