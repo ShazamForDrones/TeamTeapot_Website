@@ -25,15 +25,16 @@
         {% if error == True %}
         <p>User or password not valid</p>
         {% endif %}
+        <div class="backgroundcontainerregister1">
         <form class="loginContainer" method="POST">
             <h2>Connection</h2>
             <input class="cta-input" type="email" name="mail" placeholder="Email" required><br>
             <input class="cta-input" type="password" name="pass" placeholder="Password" required><br>
             <button class="cta-button loginBtn" type="submit">Log In</button>
+            <div style="margin:10px">
+            <a href="http://teapottdt.ca/#Get-Started" style="text-decoration: none; color: #6fa8dc">No account? Sign up !</a>
+        </div>
         </form>
-        <div id="registerFooter">
-            <p>No account?</p>
-            <a href="{{ url_for('register')}}">Sign up</a>
         </div>
     </div>
 </body>

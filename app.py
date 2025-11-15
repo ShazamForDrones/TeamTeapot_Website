@@ -11,17 +11,31 @@ url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
+def getusr(userid):
+    profile_response = supabase.table("Profiles").select("username").eq("id", userid).single().execute()
+    print(profile_response)
+    profile_data = profile_response.data
+    print(profile_data)
+    session["username"] = profile_data.get("username") if profile_data else None
+
+
 @app.route('/', methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         print("try signup")
         try:
+            username = request.form["username"]
             email = request.form["email"]
             password = request.form["password"]
-            result = supabase.auth.sign_up({"email": email, "password": password})
+            result = supabase.auth.sign_up({"email": email, "password": password,"options": {"data": {"username": username}}})
+            userid = result.user.id
+            supabase.table("Profiles").insert({"id": userid,"username": username}).execute()
+            print(supabase.table("Profiles").select("*"))
             if result.user:
                 print("Passed -> signup")
                 session["user"] = result.user.email
+                getusr(userid)
+
                 session["access_token"] = result.session.access_token
                 return redirect(url_for("index"))
         except Exception as e:
@@ -51,6 +65,7 @@ def login():
             retour = supabase.auth.sign_in_with_password(
                 {"email": mail, "password": password}
             )
+            getusr(retour.user.id)
             session["user"] = retour.user.email
             session["access_token"] = retour.session.access_token  # IMPORTANT
             return redirect(url_for("index"))
@@ -67,6 +82,8 @@ def login():
 @app.route("/logout")
 def logout():
     session.pop("user", None)
+    session.pop("access_token", None)
+    session.pop("username", None)
     return redirect(url_for("index"))
 
 @app.route("/register", methods=["GET", "POST"])
@@ -110,9 +127,12 @@ def felix():
 def jeremie():
     return "jeremie"
 
-@app.route("/dashbaord")
+@app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+    if session.get("user"):
+        return render_template("dashboard.html")
+    else:
+        return redirect(url_for("index"))
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000,debug=True)
+    app.run(host="0.0.0.0", port=80,debug=True)

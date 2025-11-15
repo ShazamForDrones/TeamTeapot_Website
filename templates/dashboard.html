@@ -2,9 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Teapot TDT - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleDash.css') }}">
+    <link rel="script" href="{{ url_for('static', filename='js/sidebar.js') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <p>Dashboard</p>
+    <div class="dashboard">
+        <aside class="sidebar" id="sidebar">
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                <li><a href="#"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+                <li><a href="#"><i class="fas fa-users"></i><span>Users</span></a></li>
+                <li><a href="#"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+            </ul>
+        </aside>
+
+        <div class="main">
+            <header class="top-header">
+                <h1>{{ session["username"] }}'s Dashboard</h1>
+            </header>
+
+            <div class="content">
+                <p>Welcome to your dashboard!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 </body>
 </html>

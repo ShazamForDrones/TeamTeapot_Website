@@ -28,12 +28,17 @@
         <div class="heroback"></div>
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1>A new step in A.I. drone detection</h1>
-                    <p></p>
                     {% if session["user"] %}
-                        <a href="{{ url_for('dashboard')}}" class="cta-button">Open Dashboard</a>
+                        <h1>Welcome, {{ session["username"] | title }}!</h1>
                     {% else %}
-                        <a href="#reg" class="cta-button">Get Started</a>
+                    <h1>A new step in A.I. drone detection</h1>
+                        <p></p>
+                    {% endif %}
+                        <p></p>
+                    {% if session["user"] %}
+                        <a href="{{ url_for('dashboard')}}" class="cta-buttondash">Open Dashboard</a>
+                    {% else %}
+                        <a href="#Get-Started" class="cta-button">Get Started</a>
                     {% endif %}
                 </div>
         </div>
@@ -116,12 +121,13 @@
                 <img src="{{ url_for('static', filename='img/julien.jpg') }}" width="70px">
             </div>
             </a>
-            <a href="{{ url_for('felix') }}" style="text-decoration: none;">
+            <!--<a href="{{ url_for('felix') }}" style="text-decoration: none;">
             <div class="Team-card">
                 <h3>Félix Lachapelle</h3>
                 <img src="{{ url_for('static', filename='img/felix.jpg') }}" width="70px">
             </div>
             </a>
+            -->
             <a href="{{ url_for('eric') }}" style="text-decoration: none;">
             <div class="Team-card">
                 <h3>Eric Fischer</h3>
@@ -138,11 +144,12 @@
     </section>
     {% if session["user"] %}
         {% else %}
-        <section class="Registersec" id="reg" style="padding: 9rem 2rem;">
+    <section class="Registersec" id="Get-Started" style="padding: 9rem 2rem;">
         <div class="loginContainerindex">
-            <div class="backgroundcontainerregister">
+            <div class="backgroundcontainerregister" style="width: 15%;height: 15%">
             <form class="loginContainerindex" method="POST">
             <h2 id="regreal" style="color: #0b5394;padding-bottom: 3%;font-size:40px;" >Create an account</h2>
+            <input class="cta-input" type="text" name="username" placeholder="Username" required style="margin: 17px;" >
             <input class="cta-input" type="email" name="email" placeholder="Email" required style="margin: 5px;" ><br>
             <input class="cta-input" type="password" name="password" placeholder="Mot de passe" required style="margin: -10px;"><br>
             <button class="cta-button loginBtn" type="submit">Sign up</button>
