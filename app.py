@@ -23,7 +23,7 @@ def mapxy():
     if session["user"]:
         userid = session["Userid"]
         retourcoords = supabase.table("Devices").select("coords").eq("owner_id", userid).execute()
-        if retourcoords.data is not []:
+        if retourcoords.data:
             data = retourcoords.data
             xy = data[0]
             print(xy)
