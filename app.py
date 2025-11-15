@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import folium
 
 app = Flask(__name__)
 app.secret_key = "f957bd8188ffe4a4e010e9d2b1ba2dfc7f74d4c1e6fc4d839ce3dfe0a9f9977b"
@@ -17,7 +18,19 @@ def getusr(userid):
     profile_data = profile_response.data
     print(profile_data)
     session["username"] = profile_data.get("username") if profile_data else None
-
+def mapxy():
+    print(session)
+    if session["user"]:
+        userid = session["Userid"]
+        retourcoords = supabase.table("Devices").select("coords").eq("owner_id", userid).execute()
+        data = retourcoords.data
+        xy = data[0]
+        print(xy)
+        coords = xy["coords"]
+        m = folium.Map(location=(coords["y"], coords["x"]))
+        return m
+    else:
+        print("no user")
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -50,6 +63,7 @@ def index():
                 print("Passed -> signin")
                 session["user"] = result.user.email
                 session["access_token"] = result.session.access_token
+                session["Userid"] = result.user.id
                 return redirect(url_for("index"))
         except Exception as e:
             print("error:", e)
@@ -68,6 +82,7 @@ def login():
             )
             getusr(retour.user.id)
             session["user"] = retour.user.email
+            session["Userid"] = retour.user.id
             session["access_token"] = retour.session.access_token  # IMPORTANT
             return redirect(url_for("index"))
         except Exception as e:
@@ -131,12 +146,17 @@ def jeremie():
 @app.route("/dashboard")
 def dashboard():
     if session.get("user"):
-        return render_template("dashboard.html")
+        m = mapxy()
+        m.get_root().width = "800px"
+        m.get_root().height = "600px"
+        map = m.get_root()._repr_html_()
+        return render_template("dashboard.html",map=map)
     else:
         return redirect(url_for("index"))
 
 @app.route("/map")
 def mapps():
+    mapxy()
     return render_template("map.html")
 
 
