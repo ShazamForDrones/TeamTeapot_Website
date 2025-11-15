@@ -1,67 +1,74 @@
+// DOM Elements
 const sidebar = document.getElementById('sidebar');
-const sidebarUl = document.getElementById('sidebarUl');
+const sidebarItems = document.querySelectorAll('#sidebarUl li');
 let currentTab = document.getElementById('tab-dashboard');
-const content = document.getElementById('content');
 
-const tabDashboard = document.getElementById('tab-dashboard');
-const tabAnalytics = document.getElementById('tab-analytics');
-const tabThreats = document.getElementById('tab-threats');
-const tabDevices = document.getElementById('tab-devices');
-const tabServers = document.getElementById('tab-servers');
-const tabLiveMap = document.getElementById('tab-live-map');
-
-const sidebarDashboard = document.getElementById('sidebarDashboard');
-const sidebarAnalytics = document.getElementById('sidebarAnalytics');
-const sidebarThreats = document.getElementById('sidebarThreats');
-const sidebarDevices = document.getElementById('sidebarDevices');
-const sidebarServers = document.getElementById('sidebarServers');
-const sidebarLiveMap = document.getElementById('sidebarLiveMap');
-
-const tabMap = new Map();
-tabMap.set("sidebarDashboard", "tab-dashboard");
-tabMap.set("sidebarAnalytics", "tab-analytics");
-tabMap.set("sidebarThreats", "tab-threats");
-tabMap.set("sidebarDevices", "tab-devices");
-tabMap.set("sidebarServers", "tab-servers");
-tabMap.set("sidebarLiveMap", "tab-live-map");
-
-// Expand when mouse enters
+// Sidebar hover functionality
 sidebar.addEventListener('mouseenter', () => {
     sidebar.classList.add('expanded');
 });
 
-// Collapse when mouse leaves
 sidebar.addEventListener('mouseleave', () => {
     sidebar.classList.remove('expanded');
 });
 
-// tab nav
+// Tab navigation
+function loadPage(tabId) {
+    // Hide current tab
+    if (currentTab) {
+        currentTab.classList.add('tab-content-hidden');
+    }
 
-function loadPage(newPage) {
-    currentTab.classList.add('tab-content-hidden');
-    currentTab = newPage;
-    currentTab.classList.remove('tab-content-hidden');
-};
+    // Show new tab
+    const newTab = document.getElementById(`tab-${tabId}`);
+    if (newTab) {
+        newTab.classList.remove('tab-content-hidden');
+        currentTab = newTab;
+    }
 
-sidebarDashboard.addEventListener('click', () => {
-    loadPage(tabDashboard);
-});
-sidebarAnalytics.addEventListener('click', () => {
-    loadPage(tabAnalytics);
-});
-sidebarThreats.addEventListener('click', () => {
-    loadPage(tabThreats);
-});
-sidebarDevices.addEventListener('click', () => {
-    loadPage(tabDevices);
-});
-sidebarServers.addEventListener('click', () => {
-    loadPage(tabServers);
-});
-sidebarLiveMap.addEventListener('click', () => {
-    loadPage(tabLiveMap);
+    // Update active state in sidebar
+    sidebarItems.forEach(item => item.classList.remove('active'));
+    const activeItem = document.querySelector(`[data-tab="${tabId}"]`).parentElement;
+    if (activeItem) {
+        activeItem.classList.add('active');
+    }
+}
+
+// Add click listeners to sidebar items
+sidebarItems.forEach(item => {
+    const link = item.querySelector('a');
+    if (link) {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabId = link.dataset.tab;
+            if (tabId) {
+                loadPage(tabId);
+            }
+        });
+    }
 });
 
-// threats
+// Optional: Handle browser back/forward buttons with URL hash
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+        loadPage(hash);
+    }
+});
 
+// Update URL when tab changes
+sidebarItems.forEach(item => {
+    const link = item.querySelector('a');
+    if (link) {
+        link.addEventListener('click', () => {
+            const tabId = link.dataset.tab;
+            window.location.hash = tabId;
+        });
+    }
+});
 
+// Load initial tab from URL hash if present
+if (window.location.hash) {
+    const initialTab = window.location.hash.slice(1);
+    loadPage(initialTab);
+}

@@ -4,6 +4,9 @@
     --color-mid: #0b5394;
     --color-dark: #073763;
     --color-very-dark: #031424;
+    --sidebar-collapsed: 60px;
+    --sidebar-expanded: 200px;
+    --transition-speed: 0.3s;
 }
 
 * {
@@ -20,19 +23,21 @@ body, html {
 .dashboard {
     display: flex;
     height: 100vh;
+    overflow: hidden;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 60px; /* collapsed width */
+    width: var(--sidebar-collapsed);
     background-color: var(--color-mid);
     color: white;
-    transition: width 0.3s;
+    transition: width var(--transition-speed);
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .sidebar.expanded {
-    width: 200px; /* expanded width */
+    width: var(--sidebar-expanded);
 }
 
 .sidebar ul {
@@ -42,6 +47,7 @@ body, html {
 
 .sidebar ul li {
     margin: 20px 0;
+    position: relative;
 }
 
 .sidebar ul li a {
@@ -51,10 +57,25 @@ body, html {
     text-decoration: none;
     padding: 10px;
     transition: background 0.2s;
+    position: relative;
 }
 
 .sidebar ul li a:hover {
     background-color: var(--color-mid-light);
+}
+
+.sidebar ul li.active a {
+    background-color: var(--color-light);
+}
+
+.sidebar ul li.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: white;
 }
 
 .sidebar ul li a i {
@@ -63,12 +84,11 @@ body, html {
     font-size: 28px;
 }
 
-
 .sidebar ul li a span {
     margin-left: 10px;
     white-space: nowrap;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity var(--transition-speed);
 }
 
 .sidebar.expanded ul li a span {
@@ -82,28 +102,49 @@ body, html {
     flex-direction: column;
     background-color: var(--color-very-dark);
     color: white;
+    overflow: hidden;
 }
 
 /* Top header */
 .top-header {
-    height: 50px;
+    height: 60px;
     background-color: var(--color-dark);
     display: flex;
     align-items: center;
     padding: 0 20px;
     font-size: 1.1rem;
+    flex-shrink: 0;
 }
 
 /* Content area */
 #content {
     padding: 20px;
     flex: 1;
+    overflow-y: auto;
+}
+
+.tabPage {
+    width: 100%;
+    height: 100%;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .tab-content-hidden {
     display: none;
 }
 
+/* Device Section */
 .device-section {
     max-width: 1200px;
     margin: 0 auto;
@@ -114,6 +155,10 @@ body, html {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
+}
+
+.device-link {
+    text-decoration: none;
 }
 
 .device-card {
@@ -127,26 +172,99 @@ body, html {
 }
 
 .device-card:hover {
-    border-color: #0b5394;
+    border-color: var(--color-mid);
     box-shadow: 0 0 20px rgba(11, 83, 148, 0.3);
     transform: translateY(-5px);
 }
 
 .device-card h3 {
-    color: #0b5394;
+    color: var(--color-mid);
     margin-bottom: 1rem;
     font-size: 1.5rem;
 }
 
 .device-card img {
     border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.device-card:hover img {
+    transform: scale(1.1);
 }
 
 .device-card p {
     color: #b3b3b3;
 }
 
-.tabPage {
-    width: 100%;
+/* Map Section */
+.map-section {
     height: 100%;
+    width: 100%;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    color: var(--color-mid-light);
+    gap: 1rem;
+}
+
+.empty-state i {
+    opacity: 0.5;
+}
+
+.empty-state h2 {
+    color: var(--color-light);
+}
+
+.empty-state p {
+    color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        z-index: 1000;
+        height: 100%;
+    }
+
+    .sidebar:not(.expanded) {
+        width: 0;
+    }
+
+    .top-header h1 {
+        font-size: 0.9rem;
+    }
+
+    .device-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    #content {
+        padding: 10px;
+    }
+}
+
+/* Scrollbar styling */
+#content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#content::-webkit-scrollbar-track {
+    background: var(--color-very-dark);
+}
+
+#content::-webkit-scrollbar-thumb {
+    background: var(--color-mid);
+    border-radius: 4px;
+}
+
+#content::-webkit-scrollbar-thumb:hover {
+    background: var(--color-mid-light);
 }

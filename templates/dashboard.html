@@ -5,20 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/StyleDash.css') }}">
-        <link rel="script" href="{{ url_for('static', filename='js/sidebar.js') }}" defer>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <body>
         <div class="dashboard">
             <aside class="sidebar" id="sidebar">
-                <img src="{{ url_for('static', filename='img/teapot6.png') }}" width="45px" style="margin : 10px">
+                <img src="{{ url_for('static', filename='img/teapot6.png') }}" width="45px" style="margin: 10px" alt="Logo">
                 <ul id="sidebarUl">
-                    <li id="sidebarDashboard"><a href="#"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-                    <li id="sidebarAnalytics"><a href="#"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
-                    <li id="sidebarThreats"><a href="#"><i class="fa-solid fa-crosshairs"></i><span>Threats</span></a></li>
-                    <li id="sidebarDevices"><a href="#"><i class="fa-solid fa-microchip"></i><span>Devices</span></a></li>
-                    <li id="sidebarServers"><a href="#"><i class="fa-solid fa-server"></i><span>Servers</span></a></li>
-                    <li id="sidebarLiveMap"><a href="#"><i class="fa-solid fa-map-location"></i><span>Live Map</span></a></li>
+                    <li id="sidebarDashboard" class="active"><a href="#" data-tab="dashboard"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                    <li id="sidebarAnalytics"><a href="#" data-tab="analytics"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+                    <li id="sidebarThreats"><a href="#" data-tab="threats"><i class="fa-solid fa-crosshairs"></i><span>Threats</span></a></li>
+                    <li id="sidebarDevices"><a href="#" data-tab="devices"><i class="fa-solid fa-microchip"></i><span>Devices</span></a></li>
+                    <li id="sidebarServers"><a href="#" data-tab="servers"><i class="fa-solid fa-server"></i><span>Servers</span></a></li>
+                    <li id="sidebarLiveMap"><a href="#" data-tab="live-map"><i class="fa-solid fa-map-location"></i><span>Live Map</span></a></li>
                 </ul>
             </aside>
 
@@ -28,34 +27,59 @@
                 </header>
 
                 <div id="content">
-                    <div id="tab-dashboard" class="tabPage">Dashboard tab</div>
-                    <div id="tab-analytics" class="tabPage tab-content-hidden">Analytics tab</div>
-                    <div id="tab-threats" class="tabPage tab-content-hidden">Threats tab</div>
+                    <div id="tab-dashboard" class="tabPage">
+                        <h2>Dashboard Overview</h2>
+                        <p>Welcome to your dashboard</p>
+                    </div>
+
+                    <div id="tab-analytics" class="tabPage tab-content-hidden">
+                        <h2>Analytics</h2>
+                    </div>
+
+                    <div id="tab-threats" class="tabPage tab-content-hidden">
+                        <h2>Threat Detection</h2>
+                    </div>
+
                     <div id="tab-devices" class="tabPage tab-content-hidden">
                         <section class="device-section">
                             {% if devices %}
                                 <div class="device-grid">
                                     {% for device in devices %}
-                                        <a href="#" style="text-decoration: none;">
+                                        <a href="#" class="device-link">
                                             <div class="device-card">
                                                 <h3>{{ device["attname"] }}</h3>
-                                                <img src="{{ device.get('image_url', '/static/img/default-device.png') }}" width="70px" alt="{{ device['attname'] }}">
+                                                <img src="{{ device.get('image_url', '/static/img/default-device.png') }}"
+                                                     width="70px"
+                                                     alt="{{ device['attname'] }}"
+                                                     loading="lazy">
                                             </div>
                                         </a>
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                <h1 style="text-align:center; color:#0b5394;">Create a new device</h1>
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-microchip fa-4x"></i>
+                                    <h2>No Devices Found</h2>
+                                    <p>Create a new device to get started</p>
+                                </div>
                             {% endif %}
                         </section>
                     </div>
-                    <div id="tab-servers" class="tabPage tab-content-hidden">Servers tab</div>
+
+                    <div id="tab-servers" class="tabPage tab-content-hidden">
+                        <h2>Server Management</h2>
+                    </div>
+
                     <div id="tab-live-map" class="tabPage tab-content-hidden">
-                        <section style="height: 100%;">
+                        <section class="map-section">
                             {% if map %}
-                                {{  map|safe }}
+                                {{ map|safe }}
                             {% else %}
-                                <h1>Create a new device to use the live map</h1>
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-map-location fa-4x"></i>
+                                    <h2>Live Map Unavailable</h2>
+                                    <p>Create a new device to use the live map</p>
+                                </div>
                             {% endif %}
                         </section>
                     </div>
@@ -66,7 +90,3 @@
         <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
     </body>
 </html>
-
-
-
-
