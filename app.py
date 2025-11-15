@@ -23,9 +23,7 @@ def mapxy():
     if session["user"]:
         userid = session["Userid"]
         retourcoords = supabase.table("Devices").select("coords").eq("owner_id", userid).execute()
-        while True:
-            print(retourcoords)
-        if retourcoords.data is not None:
+        if retourcoords.data is not []:
             data = retourcoords.data
             xy = data[0]
             print(xy)
@@ -33,7 +31,7 @@ def mapxy():
             m = folium.Map(location=(coords["y"], coords["x"]))
             return m
         else:
-            return
+            return None
 
     else:
         print("no user")
