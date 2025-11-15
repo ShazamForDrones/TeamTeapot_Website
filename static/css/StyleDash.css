@@ -58,10 +58,11 @@ body, html {
 }
 
 .sidebar ul li a i {
-    min-width: 30px;
+    min-width: 45px;
     text-align: center;
-    font-size: 18px;
+    font-size: 28px;
 }
+
 
 .sidebar ul li a span {
     margin-left: 10px;
