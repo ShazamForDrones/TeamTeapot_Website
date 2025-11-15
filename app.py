@@ -3,6 +3,7 @@ import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import folium
+import json
 
 app = Flask(__name__)
 app.secret_key = "f957bd8188ffe4a4e010e9d2b1ba2dfc7f74d4c1e6fc4d839ce3dfe0a9f9977b"
@@ -19,7 +20,6 @@ def getusr(userid):
     print(profile_data)
     session["username"] = profile_data.get("username") if profile_data else None
 def mapxy():
-    print(session)
     if session["user"]:
         userid = session["Userid"]
         retourcoords = supabase.table("Devices").select("coords").eq("owner_id", userid).execute()
@@ -31,6 +31,19 @@ def mapxy():
         return m
     else:
         print("no user")
+def createalldevics():
+    if not session.get("user"):
+        print("no user")
+        return
+
+    userid = session.get("Userid")
+    if not userid:
+        print("Userid missing in session")
+        return
+    userid = session["Userid"]
+    data = supabase.table("Devices").select("*").eq("owner_id", userid).execute()
+    dataa = data.data
+    return dataa
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -145,12 +158,13 @@ def jeremie():
 
 @app.route("/dashboard")
 def dashboard():
+    datadevices = createalldevics()
     if session.get("user"):
         m = mapxy()
         m.get_root().width = "800px"
         m.get_root().height = "600px"
         map = m.get_root()._repr_html_()
-        return render_template("dashboard.html",map=map)
+        return render_template("dashboard.html",map=map,devices=datadevices)
     else:
         return redirect(url_for("index"))
 
@@ -161,4 +175,4 @@ def mapps():
 
 
 if __name__ == '__main__':
-    app.run( debug=True)
+    app.run( port=80,debug=True)
