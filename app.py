@@ -163,6 +163,7 @@ def jeremie():
 @app.route("/dashboard")
 def dashboard():
     datadevices = createalldevics()
+    print(datadevices)
     if session.get("user"):
         m = mapxy()
         if m is not None:

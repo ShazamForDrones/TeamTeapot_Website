@@ -103,3 +103,45 @@ body, html {
 .tab-content-hidden {
     display: none;
 }
+
+.device-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.device-card {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(5px);
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid #333;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.device-card:hover {
+    border-color: #0b5394;
+    box-shadow: 0 0 20px rgba(11, 83, 148, 0.3);
+    transform: translateY(-5px);
+}
+
+.device-card h3 {
+    color: #0b5394;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.device-card img {
+    border-radius: 50%;
+}
+
+.device-card p {
+    color: #b3b3b3;
+}
