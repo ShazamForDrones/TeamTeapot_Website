@@ -23,7 +23,10 @@ def mapxy():
     if session["user"]:
         userid = session["Userid"]
         retourcoords = supabase.table("Devices").select("coords").eq("owner_id", userid).execute()
-        data = retourcoords.data
+        if retourcoords.data is not None:
+            data = retourcoords.data
+        else:
+            return
         xy = data[0]
         print(xy)
         coords = xy["coords"]
@@ -161,10 +164,12 @@ def dashboard():
     datadevices = createalldevics()
     if session.get("user"):
         m = mapxy()
-        m.get_root().width = "800px"
-        m.get_root().height = "600px"
-        map = m.get_root()._repr_html_()
-        return render_template("dashboard.html",map=map,devices=datadevices)
+        if m is not None:
+            m.get_root().width = "800px"
+            m.get_root().height = "600px"
+            map = m.get_root()._repr_html_()
+            return render_template("dashboard.html",map=map,devices=datadevices)
+        return render_template("dashboard.html",map=None,devices=None)
     else:
         return redirect(url_for("index"))
 
