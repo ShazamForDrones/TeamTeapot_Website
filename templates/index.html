@@ -31,7 +31,7 @@
                     <h1>A new step in A.I. drone detection</h1>
                     <p></p>
                     {% if session["user"] %}
-                        <a href="#reg" class="cta-button">Open Dashboard</a>
+                        <a href="{{ url_for('dashboard')}}" class="cta-button">Open Dashboard</a>
                     {% else %}
                         <a href="#reg" class="cta-button">Get Started</a>
                     {% endif %}
@@ -136,8 +136,9 @@
             </a>
         </div>
     </section>
-
-    <section class="Registersec" id="reg" style="padding: 9rem 2rem;">
+    {% if session["user"] %}
+        {% else %}
+        <section class="Registersec" id="reg" style="padding: 9rem 2rem;">
         <div class="loginContainerindex">
             <div class="backgroundcontainerregister">
             <form class="loginContainerindex" method="POST">
@@ -152,6 +153,7 @@
         </div>
         </div>
     </section>
+    {% endif %}
 
     <section class="about" id="about">
         <h2>About Us</h2>

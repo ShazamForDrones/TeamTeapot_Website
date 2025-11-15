@@ -11,9 +11,36 @@ url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def index():
+    if request.method == "POST":
+        print("try signup")
+        try:
+            email = request.form["email"]
+            password = request.form["password"]
+            result = supabase.auth.sign_up({"email": email, "password": password})
+            if result.user:
+                print("Passed -> signup")
+                session["user"] = result.user.email
+                session["access_token"] = result.session.access_token
+                return redirect(url_for("index"))
+        except Exception as e:
+            print("error:", e)
+        print("try signin")
+        try:
+            email = request.form["email"]
+            password = request.form["password"]
+            result = supabase.auth.sign_in_with_password({"email": email, "password": password})
+            if result.user:
+                print("Passed -> signin")
+                session["user"] = result.user.email
+                session["access_token"] = result.session.access_token
+                return redirect(url_for("index"))
+        except Exception as e:
+            print("error:", e)
+        return render_template("index.html")
     return render_template("index.html")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -83,5 +110,9 @@ def felix():
 def jeremie():
     return "jeremie"
 
+@app.route("/dashbaord")
+def dashboard():
+    return render_template("dashboard.html")
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000,debug=True,ssl_context='adhoc')
+    app.run(host="0.0.0.0", port=5000,debug=True)
