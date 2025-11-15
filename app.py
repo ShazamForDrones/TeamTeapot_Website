@@ -25,13 +25,14 @@ def mapxy():
         retourcoords = supabase.table("Devices").select("coords").eq("owner_id", userid).execute()
         if retourcoords.data is not None:
             data = retourcoords.data
+            xy = data[0]
+            print(xy)
+            coords = xy["coords"]
+            m = folium.Map(location=(coords["y"], coords["x"]))
+            return m
         else:
             return
-        xy = data[0]
-        print(xy)
-        coords = xy["coords"]
-        m = folium.Map(location=(coords["y"], coords["x"]))
-        return m
+
     else:
         print("no user")
 def createalldevics():
