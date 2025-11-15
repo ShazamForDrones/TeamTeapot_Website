@@ -145,3 +145,8 @@ body, html {
 .device-card p {
     color: #b3b3b3;
 }
+
+.tabPage {
+    width: 100%;
+    height: 100%;
+}

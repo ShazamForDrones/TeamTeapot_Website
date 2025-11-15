@@ -28,10 +28,10 @@
                 </header>
 
                 <div id="content">
-                    <div id="tab-dashboard" class="">Dashboard tab</div>
-                    <div id="tab-analytics" class="tab-content-hidden">Analytics tab</div>
-                    <div id="tab-threats" class="tab-content-hidden">Threats tab</div>
-                    <div id="tab-devices" class="tab-content-hidden">
+                    <div id="tab-dashboard" class="tabPage">Dashboard tab</div>
+                    <div id="tab-analytics" class="tabPage tab-content-hidden">Analytics tab</div>
+                    <div id="tab-threats" class="tabPage tab-content-hidden">Threats tab</div>
+                    <div id="tab-devices" class="tabPage tab-content-hidden">
                         <section class="device-section">
                             {% if devices %}
                                 <div class="device-grid">
@@ -49,8 +49,8 @@
                             {% endif %}
                         </section>
                     </div>
-                    <div id="tab-servers" class="tab-content-hidden">Servers tab</div>
-                    <div id="tab-live-map" class="tab-content-hidden">
+                    <div id="tab-servers" class="tabPage tab-content-hidden">Servers tab</div>
+                    <div id="tab-live-map" class="tabPage tab-content-hidden">
                         <section>
                             {% if map %}
                                 {{  map|safe }}
