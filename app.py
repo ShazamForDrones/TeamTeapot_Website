@@ -51,11 +51,11 @@ def register():
             result = supabase.auth.sign_up({"email": email, "password": password})
             if result.user:
                 try:
-                    retour = supabase.auth.sign_in_with_password(
+                    result = supabase.auth.sign_in_with_password(
                         {"email": email, "password": password}
                     )
-                    session["user"] = retour.user.email
-                    session["access_token"] = retour.session.access_token  # IMPORTANT
+                    session["user"] = result.user.email
+                    session["access_token"] = result.session.access_token  # IMPORTANT
                     return redirect(url_for("index"))
                 except Exception as e:
                     print("error:", e)
