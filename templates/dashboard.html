@@ -42,22 +42,28 @@
     </body>
 </html>
 
-<!--
+
 <section>
-
+    {% if map %}
+        {{  map|safe }}
+    {% else %}
+        <h1>Create a new device to use the live map</h1>
+    {% endif %}
 </section>
-<section>
-
-
+<section class="device-section">
+    {% if devices %}
+        <div class="device-grid">
+            {% for device in devices %}
+                <a href="#" style="text-decoration: none;">
+                    <div class="device-card">
+                        <h3>{{ device["attname"] }}</h3>
+                        <img src="{{ device.get('image_url', '/static/img/default-device.png') }}" width="70px" alt="{{ device['attname'] }}">
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 style="text-align:center; color:#0b5394;">Create a new device</h1>
+    {% endif %}
 </section>
 
-
-<div class="device-grid">
-            <a href="" style="text-decoration: none;">
-            <div class="device-card">
-                <h3></h3>
-                <img src="" width="70px">
-            </div>
-            </a>
-</div>
--->
