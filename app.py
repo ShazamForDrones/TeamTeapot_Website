@@ -28,7 +28,18 @@ def mapxy():
             xy = data[0]
             print(xy)
             coords = xy["coords"]
-            m = folium.Map(location=(coords["y"], coords["x"]))
+            m = folium.Map(
+                location=(coords["y"], coords["x"]),
+                zoom_start=13,
+                tiles="CartoDB Dark_Matter"  # Dark tile layer
+            )
+
+            # Optional: add a marker
+            folium.Marker(
+                location=(coords["y"], coords["x"]),
+                popup="Your device",
+                icon=folium.Icon(color="green")
+            ).add_to(m)
             return m
         else:
             return None
@@ -167,8 +178,8 @@ def dashboard():
     if session.get("user"):
         m = mapxy()
         if m is not None:
-            m.get_root().width = "800px"
-            m.get_root().height = "600px"
+            m.get_root().width = "100%"
+            m.get_root().height = "100%"
             map = m.get_root()._repr_html_()
             return render_template("dashboard.html",map=map,devices=datadevices)
         return render_template("dashboard.html",map=None,devices=None)
