@@ -28,7 +28,7 @@ def mapxy():
         print(xy)
         coords = xy["coords"]
         m = folium.Map(location=(coords["y"], coords["x"]))
-        m.save(f"templates/{userid}.html")
+        return m
     else:
         print("no user")
 
@@ -146,7 +146,11 @@ def jeremie():
 @app.route("/dashboard")
 def dashboard():
     if session.get("user"):
-        return render_template("dashboard.html")
+        m = mapxy()
+        m.get_root().width = "800px"
+        m.get_root().height = "600px"
+        map = m.get_root()._repr_html_()
+        return render_template("dashboard.html",map=map)
     else:
         return redirect(url_for("index"))
 
