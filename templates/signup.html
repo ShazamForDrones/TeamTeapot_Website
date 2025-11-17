@@ -25,8 +25,11 @@
     </header>
 
     <div class="loginContainer">
-        {% if error == True %}
-        <p>User or password not valid</p>
+        {% if error %}
+        <div style="background-color: #dc2626; color: white; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #991b1b; font-weight: 500; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);">
+            <strong>❌ Registration Failed</strong>
+            <p style="margin: 8px 0 0 0; font-size: 14px;">{{ error }}</p>
+        </div>
         {% endif %}
 
         <form class="loginContainer" method="POST">

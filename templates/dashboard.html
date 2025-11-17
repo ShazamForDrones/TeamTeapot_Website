@@ -4,89 +4,356 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/StyleDash.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+        .sidebar span { display: none; }
+        .sidebar:hover span { display: inline; }
+        </style>
     </head>
-    <body>
-        <div class="dashboard">
-            <aside class="sidebar" id="sidebar">
-                <img src="{{ url_for('static', filename='img/teapot6.png') }}" width="45px" style="margin: 10px" alt="Logo">
-                <ul id="sidebarUl">
-                    <li id="sidebarDashboard" class="active"><a href="#" data-tab="dashboard"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
-                    <li id="sidebarAnalytics"><a href="#" data-tab="analytics"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
-                    <li id="sidebarThreats"><a href="#" data-tab="threats"><i class="fa-solid fa-crosshairs"></i><span>Threats</span></a></li>
-                    <li id="sidebarDevices"><a href="#" data-tab="devices"><i class="fa-solid fa-microchip"></i><span>Devices</span></a></li>
-                    <li id="sidebarServers"><a href="#" data-tab="servers"><i class="fa-solid fa-server"></i><span>Servers</span></a></li>
-                    <li id="sidebarLiveMap"><a href="#" data-tab="live-map"><i class="fa-solid fa-map-location"></i><span>Live Map</span></a></li>
+    <body class="bg-gray-900 text-gray-100">
+        <div class="flex h-screen">
+            <aside class="sidebar w-16 bg-blue-900 transition-all duration-300 overflow-hidden fixed h-full z-50 hover:w-52">
+                <img src="{{ url_for('static', filename='img/teapot6.png') }}" width="45px" class="m-2.5" alt="Logo">
+                <ul id="sidebarUl" class="space-y-0">
+                    <li id="sidebarDashboard" class="active"><a href="#dashboard" data-tab="dashboard" class="flex items-center gap-4 px-2.5 py-4 text-white hover:bg-blue-800 transition"><i class="fas fa-home text-2xl w-12 flex-shrink-0 text-center"></i><span>Dashboard</span></a></li>
+                    <li id="sidebarAnalytics"><a href="#analytics" data-tab="analytics" class="flex items-center gap-4 px-2.5 py-4 text-white hover:bg-blue-800 transition"><i class="fas fa-chart-line text-2xl w-12 flex-shrink-0 text-center"></i><span>Analytics</span></a></li>
+                    <li id="sidebarThreats"><a href="#threats" data-tab="threats" class="flex items-center gap-4 px-2.5 py-4 text-white hover:bg-blue-800 transition"><i class="fa-solid fa-crosshairs text-2xl w-12 flex-shrink-0 text-center"></i><span>Threats</span></a></li>
+                    <li id="sidebarDevices"><a href="#devices" data-tab="devices" class="flex items-center gap-4 px-2.5 py-4 text-white hover:bg-blue-800 transition"><i class="fa-solid fa-microchip text-2xl w-12 flex-shrink-0 text-center"></i><span>Devices</span></a></li>
+                    <li id="sidebarServers"><a href="#servers" data-tab="servers" class="flex items-center gap-4 px-2.5 py-4 text-white hover:bg-blue-800 transition"><i class="fa-solid fa-server text-2xl w-12 flex-shrink-0 text-center"></i><span>Servers</span></a></li>
+                    <li id="sidebarLiveMap"><a href="#live-map" data-tab="live-map" class="flex items-center gap-4 px-2.5 py-4 text-white hover:bg-blue-800 transition"><i class="fa-solid fa-map-location text-2xl w-12 flex-shrink-0 text-center"></i><span>Live Map</span></a></li>
                 </ul>
             </aside>
 
-            <div class="main">
-                <header class="top-header">
-                    <h1>{{ session["username"] }}'s Dashboard</h1>
+            <div class="flex-1 flex flex-col ml-16">
+                <header class="h-16 bg-blue-950 flex items-center px-6 border-b-2 border-blue-800">
+                    <h1 class="text-2xl font-bold text-blue-400">{{ session["username"] }}'s Dashboard</h1>
                 </header>
 
-                <div id="content">
-                    <div id="tab-dashboard" class="tabPage">
-                        <h2>Dashboard Overview</h2>
-                        <p>Welcome to your dashboard</p>
+                <div id="content" class="flex-1 overflow-y-auto bg-gray-950 p-6">
+                    <div id="tab-dashboard" class="tab-page animate-fadeIn">
+                        <h2 class="text-3xl font-bold text-blue-500 mb-4">Dashboard Overview</h2>
+                        <p class="text-gray-300">Welcome to your dashboard</p>
                     </div>
 
-                    <div id="tab-analytics" class="tabPage tab-content-hidden">
-                        <h2>Analytics</h2>
+                    <div id="tab-analytics" class="tab-page hidden animate-fadeIn">
+                        <h2 class="text-3xl font-bold text-blue-500 mb-6">Analytics</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-400 text-sm">Total Devices</p>
+                                        <p class="text-3xl font-bold text-blue-400 mt-2" id="total-devices">-</p>
+                                    </div>
+                                    <i class="fa-solid fa-microchip text-4xl text-blue-600 opacity-20"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-400 text-sm">Active Devices</p>
+                                        <p class="text-3xl font-bold text-green-400 mt-2" id="active-devices">-</p>
+                                    </div>
+                                    <i class="fa-solid fa-circle-check text-4xl text-green-600 opacity-20"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-400 text-sm">Threats Detected</p>
+                                        <p class="text-3xl font-bold text-red-400 mt-2" id="threats-detected">-</p>
+                                    </div>
+                                    <i class="fa-solid fa-triangle-exclamation text-4xl text-red-600 opacity-20"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-400 text-sm">System Status</p>
+                                        <p class="text-3xl font-bold text-green-400 mt-2" id="system-status">-</p>
+                                    </div>
+                                    <i class="fa-solid fa-shield text-4xl text-green-600 opacity-20"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+                                <h3 class="text-xl font-bold text-blue-400 mb-4">Detection Rate</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex justify-between mb-2">
+                                            <span class="text-gray-300">Accuracy</span>
+                                            <span class="text-blue-400 font-bold" id="accuracy">-</span>
+                                        </div>
+                                        <div class="w-full bg-gray-700 rounded-full h-2">
+                                            <div class="bg-blue-500 h-2 rounded-full" id="accuracy-bar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-2">
+                                            <span class="text-gray-300">False Positives</span>
+                                            <span class="text-yellow-400 font-bold" id="false-positives">-</span>
+                                        </div>
+                                        <div class="w-full bg-gray-700 rounded-full h-2">
+                                            <div class="bg-yellow-500 h-2 rounded-full" id="fp-bar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+                                <h3 class="text-xl font-bold text-blue-400 mb-4">Device Status</h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-300">Connected</span>
+                                        <span class="text-green-400 font-bold" id="connected-count">-</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-300">Offline</span>
+                                        <span class="text-red-400 font-bold" id="offline-count">-</span>
+                                    </li>
+                                    <li class="flex items-center justify-between">
+                                        <span class="text-gray-300">Pending</span>
+                                        <span class="text-yellow-400 font-bold" id="pending-count">-</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mt-6">
+                            <h3 class="text-xl font-bold text-blue-400 mb-4">Recent Threats</h3>
+                            <div id="threats-list" class="space-y-3">
+                                <p class="text-gray-400">Loading...</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div id="tab-threats" class="tabPage tab-content-hidden">
-                        <h2>Threat Detection</h2>
+                    <div id="tab-threats" class="tab-page hidden animate-fadeIn">
+                        <h2 class="text-3xl font-bold text-blue-500 mb-4">Threat Detection</h2>
                     </div>
 
-                    <div id="tab-devices" class="tabPage tab-content-hidden">
-                        <section class="device-section">
-                            {% if devices %}
-                                <div class="device-grid">
-                                    {% for device in devices %}
-                                        <a href="#" class="device-link">
-                                            <div class="device-card">
-                                                <h3>{{ device["attname"] }}</h3>
-                                                <img src="{{ device.get('image_url', '/static/img/default-device.png') }}"
-                                                     width="70px"
-                                                     alt="{{ device['attname'] }}"
-                                                     loading="lazy">
+                    <div id="tab-devices" class="tab-page hidden animate-fadeIn">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-3xl font-bold text-blue-500">Your Devices</h2>
+                            <button id="addDeviceBtn" class="flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition font-semibold"><i class="fa-solid fa-plus"></i>Add Device</button>
+                        </div>
+
+                        <!-- Add Device Modal -->
+                        <div id="addDeviceModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div class="bg-gray-800 rounded-lg p-8 w-96 border border-gray-700">
+                                <h3 class="text-2xl font-bold text-blue-400 mb-6">Add New Device</h3>
+                                <form id="addDeviceForm" class="space-y-4">
+                                    <div>
+                                        <label class="block text-gray-300 mb-2">Device Name</label>
+                                        <input type="text" id="deviceName" name="device_name" placeholder="e.g., Drone Alpha" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-300 mb-2">Device Type</label>
+                                        <select id="deviceType" name="device_type" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500">
+                                            <option value="drone">Drone</option>
+                                            <option value="camera">Camera</option>
+                                            <option value="sensor">Sensor</option>
+                                            <option value="gateway">Gateway</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div id="deviceCodeDisplay" class="hidden bg-blue-900 border border-blue-700 rounded-lg p-4">
+                                        <p class="text-gray-300 text-sm mb-2">Your Device Code:</p>
+                                        <p id="generatedCode" class="text-2xl font-bold text-blue-400 font-mono tracking-wider">XXXX-XXXX</p>
+                                        <p class="text-gray-400 text-xs mt-2">Use this code to register your physical device</p>
+                                    </div>
+                                    <div class="flex gap-4 pt-4">
+                                        <button type="submit" class="flex-1 px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition font-semibold">Create Device</button>
+                                        <button type="button" id="closeModalBtn" class="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition font-semibold">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        {% if devices %}
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {% for device in devices %}
+                                    <div class="bg-gray-800 rounded-lg border border-gray-700 hover:border-blue-500 p-6 transition-all hover:shadow-lg hover:shadow-blue-500/20">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <h3 class="text-xl font-bold text-blue-400">{{ device["device_name"] }}</h3>
+                                            <span class="px-3 py-1 rounded-full text-xs font-semibold {% if device['status'] == 'online' %}bg-green-900 text-green-300{% else %}bg-red-900 text-red-300{% endif %}">{{ device["status"]|upper }}</span>
+                                        </div>
+                                        <div class="text-center mb-4">
+                                            <div class="inline-block bg-gray-700 rounded-lg p-4">
+                                                <p class="text-xs text-gray-400 mb-1">Device Code</p>
+                                                <p class="text-lg font-mono font-bold text-blue-400">{{ device["device_code"] }}</p>
                                             </div>
-                                        </a>
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <div class="empty-state">
-                                    <i class="fa-solid fa-microchip fa-4x"></i>
-                                    <h2>No Devices Found</h2>
-                                    <p>Create a new device to get started</p>
-                                </div>
-                            {% endif %}
-                        </section>
+                                        </div>
+                                        <div class="text-sm text-gray-400 mb-4 space-y-1">
+                                            <p><span class="text-gray-500">Type:</span> {{ device["device_type"]|title }}</p>
+                                            <p><span class="text-gray-500">Last Seen:</span> {{ device["last_seen"][:10] if device["last_seen"] else "Never" }}</p>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <button class="flex-1 px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded transition text-sm font-semibold">View</button>
+                                            <button data-device-id="{{ device['id'] }}" class="delete-device-btn flex-1 px-4 py-2 bg-red-700 hover:bg-red-600 text-white rounded transition text-sm font-semibold">Delete</button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="flex flex-col items-center justify-center h-96">
+                                <i class="fa-solid fa-microchip text-6xl text-gray-600 mb-4"></i>
+                                <h2 class="text-2xl font-bold text-gray-400 mb-2">No Devices Found</h2>
+                                <p class="text-gray-500">Create a new device to get started</p>
+                            </div>
+                        {% endif %}
                     </div>
 
-                    <div id="tab-servers" class="tabPage tab-content-hidden">
-                        <h2>Server Management</h2>
+                    <div id="tab-servers" class="tab-page hidden animate-fadeIn">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-3xl font-bold text-blue-500">Server Management</h2>
+                            <button class="flex items-center gap-2 px-6 py-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition font-semibold"><i class="fa-solid fa-plus"></i>Add Server</button>
+                        </div>
+                        <div class="flex flex-col items-center justify-center h-96">
+                            <i class="fa-solid fa-server text-6xl text-gray-600 mb-4"></i>
+                            <h2 class="text-2xl font-bold text-gray-400 mb-2">No Servers Found</h2>
+                            <p class="text-gray-500">Create a new server to get started</p>
+                        </div>
                     </div>
 
-                    <div id="tab-live-map" class="tabPage tab-content-hidden">
-                        <section class="map-section">
-                            {% if map %}
+                    <div id="tab-live-map" class="tab-page hidden animate-fadeIn">
+                        {% if map %}
+                            <div style="width: 100%; height: calc(100vh - 200px); border-radius: 0.5rem; border: 1px solid #333; overflow: hidden;">
                                 {{ map|safe }}
-                            {% else %}
-                                <div class="empty-state">
-                                    <i class="fa-solid fa-map-location fa-4x"></i>
-                                    <h2>Live Map Unavailable</h2>
-                                    <p>Create a new device to use the live map</p>
-                                </div>
-                            {% endif %}
-                        </section>
+                            </div>
+                        {% else %}
+                            <div class="flex flex-col items-center justify-center h-96">
+                                <i class="fa-solid fa-map-location text-6xl text-gray-600 mb-4"></i>
+                                <h2 class="text-2xl font-bold text-gray-400 mb-2">Live Map Unavailable</h2>
+                                <p class="text-gray-500">Create a new device to use the live map</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
 
-        <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+        <script>
+        const sidebarItems=document.querySelectorAll('#sidebarUl li');
+        let currentTab=document.getElementById('tab-dashboard');
+        
+        function loadPage(tabId){
+            if(currentTab)currentTab.classList.add('hidden');
+            const newTab=document.getElementById(`tab-${tabId}`);
+            if(newTab){
+                newTab.classList.remove('hidden');
+                currentTab=newTab;
+            }
+            sidebarItems.forEach(item=>item.classList.remove('active'));
+            const activeLink=document.querySelector(`[data-tab="${tabId}"]`);
+            if(activeLink)activeLink.closest('li').classList.add('active');
+        }
+        
+        sidebarItems.forEach(item=>{
+            const link=item.querySelector('a');
+            if(link){
+                link.addEventListener('click',e=>{
+                    e.preventDefault();
+                    const tabId=link.getAttribute('data-tab');
+                    if(tabId)loadPage(tabId);
+                });
+            }
+        });
+
+        // Modal functionality
+        const addDeviceBtn = document.getElementById('addDeviceBtn');
+        const addDeviceModal = document.getElementById('addDeviceModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const addDeviceForm = document.getElementById('addDeviceForm');
+
+        addDeviceBtn.addEventListener('click', () => {
+            addDeviceModal.classList.remove('hidden');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            addDeviceModal.classList.add('hidden');
+            addDeviceForm.reset();
+            document.getElementById('deviceCodeDisplay').classList.add('hidden');
+        });
+
+        addDeviceModal.addEventListener('click', (e) => {
+            if (e.target === addDeviceModal) {
+                addDeviceModal.classList.add('hidden');
+                addDeviceForm.reset();
+                document.getElementById('deviceCodeDisplay').classList.add('hidden');
+            }
+        });
+
+        addDeviceForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const deviceName = document.getElementById('deviceName').value;
+            const deviceType = document.getElementById('deviceType').value;
+
+            try {
+                const response = await fetch('/api/add-device', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        device_name: deviceName,
+                        device_type: deviceType
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('generatedCode').textContent = data.device_code;
+                    document.getElementById('deviceCodeDisplay').classList.remove('hidden');
+                    document.querySelector('button[type="submit"]').textContent = 'Device Created!';
+                    document.querySelector('button[type="submit"]').disabled = true;
+
+                    setTimeout(() => {
+                        addDeviceModal.classList.add('hidden');
+                        addDeviceForm.reset();
+                        document.getElementById('deviceCodeDisplay').classList.add('hidden');
+                        document.querySelector('button[type="submit"]').textContent = 'Create Device';
+                        document.querySelector('button[type="submit"]').disabled = false;
+                        location.reload();
+                    }, 2000);
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to create device'));
+                }
+            } catch (error) {
+                alert('Error creating device: ' + error.message);
+            }
+        });
+
+        // Delete device functionality
+        document.querySelectorAll('.delete-device-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const deviceId = btn.getAttribute('data-device-id');
+                
+                if (!confirm('Are you sure you want to delete this device?')) return;
+
+                try {
+                    const response = await fetch(`/api/delete-device/${deviceId}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        alert('Device deleted successfully');
+                        location.reload();
+                    } else {
+                        const data = await response.json();
+                        alert('Error: ' + (data.error || 'Failed to delete device'));
+                    }
+                } catch (error) {
+                    alert('Error deleting device: ' + error.message);
+                }
+            });
+        });
+        </script>
+        <script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
     </body>
 </html>

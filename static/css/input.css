@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .cta-button {
+    @apply inline-block px-10 py-4 bg-blue-700 text-blue-300 text-lg font-bold rounded-lg transition-all border-2 border-blue-700 hover:bg-transparent hover:text-blue-700 hover:shadow-lg hover:shadow-blue-700/50;
+  }
+  .cta-buttondash {
+    @apply inline-block px-10 py-4 bg-green-700 text-green-300 text-lg font-bold rounded-lg transition-all border-2 border-green-700 hover:bg-transparent hover:text-green-700 hover:shadow-lg hover:shadow-green-700/50;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in;
+}
